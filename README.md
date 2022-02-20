@@ -4,7 +4,7 @@ RPS is a simple JavaScript based rock paper scissors game created as part of the
 
 View page [here](https://itorrero98.github.io/TOP-RPS/)
 
-# Skills learned / utilized
+# Skills Learned / Utilized
 
 1. Scripting in JavaScript - Created game logic to allow users to dynamically play a computer in a game of Rock Paper Scissors
 
