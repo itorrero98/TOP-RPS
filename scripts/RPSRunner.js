@@ -13,7 +13,7 @@ function play() {
         "Please enter the number of rounds you'd like to play"
     );
     let numRounds = parseInt(userInput, 10);
-    if (typeof numRounds == "number") {
+    if (typeof numRounds === "number") {
         //Lets set variables for keeping score
         let score = { Player: 0, Computer: 0 };
 
@@ -64,6 +64,7 @@ function playRound() {
         return getRoundWinner(playerChoice, computerPlay());
     } else {
         console.error("ERROR: Player did not input value. Exiting");
+        return;
     }
 }
 
@@ -76,27 +77,27 @@ function playRound() {
 function getRoundWinner(player, computer) {
     switch (computer) {
         case GAME_CHOICES[0]:
-            if (player == computer)
+            if (player === computer)
                 return getEndRoundValues("T", player, computer);
-            else if (player == GAME_CHOICES[1])
+            else if (player === GAME_CHOICES[1])
                 return getEndRoundValues("W", player, computer);
-            else if (player == GAME_CHOICES[2])
+            else if (player === GAME_CHOICES[2])
                 return getEndRoundValues("L", player, computer);
             else return getEndRoundValues(null, player, computer);
         case GAME_CHOICES[1]:
-            if (player == computer)
+            if (player === computer)
                 return getEndRoundValues("T", player, computer);
-            else if (player == GAME_CHOICES[2])
+            else if (player === GAME_CHOICES[2])
                 return getEndRoundValues("W", player, computer);
-            else if (player == GAME_CHOICES[0])
+            else if (player === GAME_CHOICES[0])
                 return getEndRoundValues("L", player, computer);
             else return getEndRoundValues(null, player, computer);
         case GAME_CHOICES[2]:
-            if (player == computer)
+            if (player === computer)
                 return getEndRoundValues("T", player, computer);
-            else if (player == GAME_CHOICES[0])
+            else if (player === GAME_CHOICES[0])
                 return getEndRoundValues("W", player, computer);
-            else if (player == GAME_CHOICES[1])
+            else if (player === GAME_CHOICES[1])
                 return getEndRoundValues("L", player, computer);
             else return getEndRoundValues(null, player, computer);
     }
