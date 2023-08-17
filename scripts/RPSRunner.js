@@ -1,5 +1,6 @@
 /**************************** GLOBALS ******************************/
 const GAME_CHOICES = ["Rock", "Paper", "Scissors"];
+const GAME_RESULTS = ["W", "L", "T"];
 
 /**************************** GAME LOGIC ******************************/
 /**
@@ -9,9 +10,7 @@ const GAME_CHOICES = ["Rock", "Paper", "Scissors"];
  * @returns {String} Output to console the result of the game.
  */
 function play() {
-    let userInput = prompt(
-        "Please enter the number of rounds you'd like to play"
-    );
+    let userInput = prompt("Please enter the number of rounds you'd like to play");
     let numRounds = parseInt(userInput, 10);
     if (typeof numRounds === "number") {
         //Lets set variables for keeping score
@@ -24,8 +23,8 @@ function play() {
             //Log the result of the round
             console.log(result.message);
             //Increment out score and show the user the standings
-            if (result.val === "W") score.Player++;
-            else if (result.val === "L") score.Computer++;
+            if (result.val === GAME_RESULTS[0]) score.Player++;
+            else if (result.val === GAME_RESULTS[1]) score.Computer++;
             else if (result.val === null) score.Computer++;
             console.table(score);
         }
@@ -76,29 +75,32 @@ function playRound() {
  */
 function getRoundWinner(player, computer) {
     switch (computer) {
+        //Rock
         case GAME_CHOICES[0]:
             if (player === computer)
-                return getEndRoundValues("T", player, computer);
+                return getEndRoundValues(GAME_RESULTS[2] player, computer);
             else if (player === GAME_CHOICES[1])
-                return getEndRoundValues("W", player, computer);
+                return getEndRoundValues(GAME_RESULTS[0], player, computer);
             else if (player === GAME_CHOICES[2])
-                return getEndRoundValues("L", player, computer);
+                return getEndRoundValues(GAME_RESULTS[1], player, computer);
             else return getEndRoundValues(null, player, computer);
+        //Paper
         case GAME_CHOICES[1]:
             if (player === computer)
-                return getEndRoundValues("T", player, computer);
+                return getEndRoundValues(GAME_RESULTS[2] player, computer);
             else if (player === GAME_CHOICES[2])
-                return getEndRoundValues("W", player, computer);
+                return getEndRoundValues(GAME_RESULTS[0], player, computer);
             else if (player === GAME_CHOICES[0])
-                return getEndRoundValues("L", player, computer);
+                return getEndRoundValues(GAME_RESULTS[1], player, computer);
             else return getEndRoundValues(null, player, computer);
+        //Scissors
         case GAME_CHOICES[2]:
             if (player === computer)
-                return getEndRoundValues("T", player, computer);
+                return getEndRoundValues(GAME_RESULTS[2] player, computer);
             else if (player === GAME_CHOICES[0])
-                return getEndRoundValues("W", player, computer);
+                return getEndRoundValues(GAME_RESULTS[0], player, computer);
             else if (player === GAME_CHOICES[1])
-                return getEndRoundValues("L", player, computer);
+                return getEndRoundValues(GAME_RESULTS[1], player, computer);
             else return getEndRoundValues(null, player, computer);
     }
 }
@@ -112,19 +114,19 @@ function getRoundWinner(player, computer) {
  */
 function getEndRoundValues(result, playerVal, computerVal) {
     switch (result) {
-        case "W":
+        case GAME_RESULTS[0]:
             return {
-                val: "W",
+                val: GAME_RESULTS[0],
                 message: `Congratulations! You won! Your choice of ${playerVal} wrecked the computer's selection of ${computerVal}`,
             };
-        case "L":
+        case GAME_RESULTS[1]:
             return {
-                val: "L",
+                val: GAME_RESULTS[1],
                 message: `You got destroyed by the computer. You chose ${playerVal} and were read like a book because the computer chose ${computerVal}`,
             };
-        case "T":
+        case GAME_RESULTS[2]:
             return {
-                val: "T",
+                val: GAME_RESULTS[2],
                 message: `You are a worthy adversary. Both you and the computer selected ${computerVal} resulting in a tie`,
             };
         default:
