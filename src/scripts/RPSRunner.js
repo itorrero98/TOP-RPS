@@ -2,15 +2,96 @@
 const GAME_CHOICES = ["Rock", "Paper", "Scissors"];
 const GAME_RESULTS = ["W", "L", "T"];
 
+/**************************** BROWSER LOGIC ******************************/
+
+const roundNumberInput = document.getElementById("round-count");
+const startGameBtn = document.getElementById("start-game-btn");
+const newGameBtn = document.getElementById("new-game-btn");
+const startScreen = document.getElementById("start-screen");
+const midGameScreen = document.getElementById("mid-game-screen");
+const endGameScreen = document.getElementById("end-game-screen");
+const rockBtn = document.getElementById("rock-btn");
+const paperBtn = document.getElementById("paper-btn");
+const scissorsBtn = document.getElementById("scissors-btn");
+const roundNumber = document.getElementById("round-number");
+const roundResults = document.getElementById("round-results-string");
+const gameResults = document.getElementById("game-results-string");
+const playerScore = document.getElementById("player-score");
+const computerScore = document.getElementById("computer-score");
+
+startGameBtn.addEventListener("click", (e) => {
+    startScreen.classList.add('invisible');
+    midGameScreen.classList.remove('invisible');
+    play(roundNumberInput.value);
+});
+newGameBtn.addEventListener("click", (e) => {
+    startScreen.classList.remove('invisible');
+    endGameScreen.classList.add('invisible');
+    roundResults.innerText = "Please select your choice!"
+    playerScore.innerText = "0";
+    computerScore.innerText = "0";
+});
+
+
 /**************************** GAME LOGIC ******************************/
+
+let awaitUserSelection;
+
+const userChoice = () => {
+    return new Promise(resolve => awaitUserSelection = resolve);
+}
+
+function btnResolver(e) {
+    if (awaitUserSelection) awaitUserSelection(getPlayerChoiceFromID(e.target.id));
+  }
+  
+async function play(userInput) {
+    rockBtn.addEventListener('click', btnResolver);
+    paperBtn.addEventListener('click', btnResolver);
+    scissorsBtn.addEventListener('click', btnResolver);
+    //let userInput = prompt("Please enter the number of rounds you'd like to play");
+    let numRounds = parseInt(userInput, 10);
+    if (typeof numRounds === "number") {
+        //Lets set variables for keeping score
+        let score = { Player: 0, Computer: 0 };
+
+        //We have a number of rounds, lets loop that amount of times.
+        for (let i = 0; i < numRounds; i++) {
+            roundNumber.innerText = `Round: ${i + 1}`;
+            //Play a round waiting for user to click a button
+            let selection = await userChoice();
+            let result = playRound(selection);
+            //Log the result of the round
+            roundResults.innerText = result.message
+            //Increment out score and show the user the standings
+            if (result.val === GAME_RESULTS[0]) score.Player++;
+            else if (result.val === GAME_RESULTS[1]) score.Computer++;
+            else if (result.val === null) score.Computer++;
+            playerScore.innerText = score.Player.toString();
+            computerScore.innerText = score.Computer.toString();
+        }
+        let finalResult = getEndGameResult(score);
+        gameResults.innerText = finalResult;
+        midGameScreen.classList.add('invisible');
+        endGameScreen.classList.remove('invisible');
+    } else {
+        console.error("ERROR: User did not input a number, exiting game");
+        return;
+    }
+
+    rockBtn.removeEventListener('click', btnResolver);
+    paperBtn.removeEventListener('click', btnResolver);
+    scissorsBtn.removeEventListener('click', btnResolver);
+  }
+
 /**
  * Ask user the amount of games they want to play and run the rounds accordingly
  * Print out the results of each round and once finished with the entire game
  * show the user the results
  * @returns {String} Output to console the result of the game.
  */
-function play() {
-    let userInput = prompt("Please enter the number of rounds you'd like to play");
+function _oldPlay(userInput) {
+    //let userInput = prompt("Please enter the number of rounds you'd like to play");
     let numRounds = parseInt(userInput, 10);
     if (typeof numRounds === "number") {
         //Lets set variables for keeping score
@@ -53,9 +134,8 @@ function getEndGameResult(score) {
  * Run a round of RPS. Determine winner based on user input and randomly selected computer choice
  * @returns {String} - Message detailing winner of game
  */
-function playRound() {
+function playRound(playerChoice) {
     //Get Player Choice
-    let playerChoice = prompt("Rock, Paper, or Scissors?", "Paper");
     if (playerChoice) {
         //Format Player choice
         playerChoice = formatPlayerChoice(playerChoice);
@@ -78,7 +158,7 @@ function getRoundWinner(player, computer) {
         //Rock
         case GAME_CHOICES[0]:
             if (player === computer)
-                return getEndRoundValues(GAME_RESULTS[2] player, computer);
+                return getEndRoundValues(GAME_RESULTS[2], player, computer);
             else if (player === GAME_CHOICES[1])
                 return getEndRoundValues(GAME_RESULTS[0], player, computer);
             else if (player === GAME_CHOICES[2])
@@ -87,7 +167,7 @@ function getRoundWinner(player, computer) {
         //Paper
         case GAME_CHOICES[1]:
             if (player === computer)
-                return getEndRoundValues(GAME_RESULTS[2] player, computer);
+                return getEndRoundValues(GAME_RESULTS[2], player, computer);
             else if (player === GAME_CHOICES[2])
                 return getEndRoundValues(GAME_RESULTS[0], player, computer);
             else if (player === GAME_CHOICES[0])
@@ -96,7 +176,7 @@ function getRoundWinner(player, computer) {
         //Scissors
         case GAME_CHOICES[2]:
             if (player === computer)
-                return getEndRoundValues(GAME_RESULTS[2] player, computer);
+                return getEndRoundValues(GAME_RESULTS[2], player, computer);
             else if (player === GAME_CHOICES[0])
                 return getEndRoundValues(GAME_RESULTS[0], player, computer);
             else if (player === GAME_CHOICES[1])
@@ -146,6 +226,18 @@ function getEndRoundValues(result, playerVal, computerVal) {
 function formatPlayerChoice(playerChoice) {
     playerChoice = playerChoice.toLowerCase();
     return playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
+}
+
+function getPlayerChoiceFromID(id) {
+    switch(id) {
+        case 'rock-btn':
+            return 'Rock';
+        case 'paper-btn':
+            return 'Paper';
+        case 'scissors-btn':
+        default:
+            return "Scissors";
+    }
 }
 
 /**

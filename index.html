@@ -5,23 +5,44 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>RPS</title>
-
-        <script type="text/javascript" src="./scripts/RPSRunner.js"></script>
+        <link rel="stylesheet" href="src/styles/css/style.css">
+        <script type="text/javascript" src="./src/scripts/RPSRunner.js" defer></script>
     </head>
     <body>
-        <h1>Rock, Paper, Scissors!</h1>
-        <p>
-            This is currently just a console game. To play, please follow the
-            below steps:
-        </p>
-        <ol>
-            <li>
-                Open up the developer tools for your browser. (Hint: Press f12
-                on your keyboard)
-            </li>
-            <li>Find the "Console" tab and open it</li>
-            <li>In the input area, type "play()" and then hit enter</li>
-            <li>Enjoy! :)</li>
-        </ol>
+        <header>
+            <h1>Rock, Paper, Scissors!</h1>
+        </header>
+        <main>
+            <div id="start-screen" class="screen">
+                <div class="label">
+                    <label for="round-count">Number of rounds:</label>
+                    <input type="number" id="round-count" name="round-count"><br><br>
+                </div>
+                <button id="start-game-btn" class="button-primary lg">Start game</button>
+            </div>
+            <div id="mid-game-screen" class="screen invisible">
+                <h2 id="round-number"></h2>
+                <div class="center">
+                    <button id="rock-btn" class="button-primary lg">Rock</button>
+                    <button id="paper-btn" class="button-primary lg">Paper</button>
+                    <button id="scissors-btn" class="button-primary lg">Scissors</button>
+                </div>
+                <h2 id="round-results-string">Please select your choice!</h2>
+                <div id="running-score-container">
+                    <h2>Player</h2>
+                    <div class="flex">
+                        <h2 id="player-score"></h2>
+                        <h2 style="padding: 0 1rem">-</h2>
+                        <h2 id="computer-score"></h2>
+                    </div>
+                    <h2>Computer</h2>
+                </div>
+            </div>
+            <div id="end-game-screen" class="screen invisible center column">
+                <h2 id="game-results-string"></h2>
+                <button id="new-game-btn" class="button-primary lg">Play Again?</button>
+            </div>
+        </main>
+        <footer></footer>
     </body>
 </html>
