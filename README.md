@@ -7,6 +7,8 @@ View page [here](https://itorrero98.github.io/TOP-RPS/)
 # Skills Learned / Utilized
 
 1. Scripting in JavaScript - Created game logic to allow users to dynamically play a computer in a game of Rock Paper Scissors
+2. SCSS - Set up SCSS variables for themeing / styling application UI
+3. HTML / DOM Manipulation - Structuring of web page, dynamic manipulation of web page during gameplay
 
 # How To Play
 
